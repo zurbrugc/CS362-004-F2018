@@ -1145,14 +1145,13 @@ void adventurerCard(int drawntreasure, struct gameState *state, int currentPlaye
 			z++;
 		}
 	}
-	while (z - 1 >= 0) {
+	while (--z >= 0) {
 		state->discard[currentPlayer][state->discardCount[currentPlayer]++] = temphand[z - 1]; // discard all cards in play that have been drawn
-		z = z - 1;
 	}
 }
 
 void smithyCard(int i, int currentPlayer, struct gameState *state, int handPos) {
-	for (i = 0; i < 3; i++)
+	for (i = 0; i <= 3; i++)
 	{
 		drawCard(currentPlayer, state);
 	}
@@ -1168,7 +1167,7 @@ void stewardCard(int currentPlayer, struct gameState *state, int handPos, int ch
 		drawCard(currentPlayer, state);
 		drawCard(currentPlayer, state);
 	}
-	else if (choice1 == 2)
+	else if (choice2 == 2)
 	{
 		//+2 coins
 		state->coins = state->coins + 2;
@@ -1213,10 +1212,10 @@ void tributeCard(struct gameState *state, int nextPlayer, int tributeRevealedCar
 
 			shuffle(nextPlayer, state);//Shuffle the deck
 		}
-		tributeRevealedCards[0] = state->deck[nextPlayer][state->deckCount[nextPlayer] - 1];
+		tributeRevealedCards[0] = state->deck[nextPlayer][state->deckCount[nextPlayer]--];
 		state->deck[nextPlayer][state->deckCount[nextPlayer]--] = -1;
 		state->deckCount[nextPlayer]--;
-		tributeRevealedCards[1] = state->deck[nextPlayer][state->deckCount[nextPlayer] - 1];
+		tributeRevealedCards[1] = state->deck[nextPlayer][state->deckCount[nextPlayer]--];
 		state->deck[nextPlayer][state->deckCount[nextPlayer]--] = -1;
 		state->deckCount[nextPlayer]--;
 	}
