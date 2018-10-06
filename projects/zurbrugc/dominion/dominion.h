@@ -130,4 +130,20 @@ int getWinners(int players[MAX_PLAYERS], struct gameState *state);
 /* Set array position of each player who won (remember ties!) to
    1, others to 0 */
 
+//refactored cards
+void adventurerCard(int drawntreasure, struct gameState *state, int currentPlayer, int cardDrawn, int temphand[MAX_HAND], int z);
+/* Implements the adventurer card as a function */
+
+void smithyCard(int i, int currentPlayer, struct gameState *state, int handPos);
+/* Implements the smithy card as a function */
+
+void stewardCard(int currentPlayer, struct gameState *state, int handPos, int choice1, int choice2, int choice3);
+/* Implements the steward card as a function */
+
+void tributeCard(struct gameState *state, int nextPlayer, int tributeRevealedCards[2], int i, int currentPlayer);
+/* Implements...wait for it...the tribute card as a function */
+
+void villageCard(int currentPlayer, struct gameState *state, int handPos);
+/* Take a guess what this does */
+
 #endif
