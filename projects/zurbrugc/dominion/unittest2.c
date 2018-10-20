@@ -1,5 +1,6 @@
-/* FIXME: comment block*/
-/* This code is based on a template provided by Professor Jaki Sharief Shaik*/
+/* Author: Collin Zurbrugg, based on a template provided by Professor Jaki Sharief Shaik
+** Date: 10/19/2018
+** Description: A function to test the gainCard function in dominion. */
 
 #include "dominion.h"
 #include "dominion_helpers.h"
