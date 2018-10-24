@@ -10,7 +10,7 @@
 #include "rngs.h"
 
 void checkPiles(struct gameState *testGame, struct gameState *originalGame) {
-	for (i = 0; i < 27; i++)
+	for (int i = 0; i < 27; i++)
 	{
 		if (testGame->supplyCount[i] != originalGame->supplyCount[i])
 			printf("FAIL: Card pile %d changed\n", i);
@@ -65,12 +65,8 @@ void checkOtherPlayers(struct gameState *testGame, struct gameState *originalGam
 }
 
 int main() {
-	int i;
 	int seed = 55555;
 	int numPlayer = 4;
-	int maxBonus = 10;
-	int p, r, handCount;
-	int bonus;
 	int k[10] = { adventurer, council_room, feast, gardens, mine
 			   , steward, smithy, village, baron, great_hall };
 	struct gameState *benchmarkGame1 = newGame();
@@ -86,19 +82,7 @@ int main() {
 	initializeGame(numPlayer, k, 3333, testGame2);
 	initializeGame(numPlayer, k, 3333, testGame3);
 	int test1, test2, test3;
-	int *fakeBonus = -1;
-
-	int maxHandCount = 5;
-	// arrays of all coppers, silvers, and golds
-	int coppers[MAX_HAND];
-	int silvers[MAX_HAND];
-	int golds[MAX_HAND];
-	for (i = 0; i < MAX_HAND; i++)
-	{
-		coppers[i] = copper;
-		silvers[i] = silver;
-		golds[i] = gold;
-	}
+	int *fakeBonus = &seed;
 
 	//test the village card
 	//Case 1: village is first card, no actions
@@ -113,7 +97,7 @@ int main() {
 		printf("FAIL: Card returned with error of %d\n", test1);
 	//test player cards
 	if (testGame1->handCount[0] == benchmarkGame1->handCount[0])
-		printf("PASS: Hand count the same");
+		printf("PASS: Hand count the same\n");
 	else
 		printf("FAIL: Hand count incorrect; expected %d, actual %d\n", benchmarkGame1->handCount[0], testGame1->handCount[0]);
 	if (testGame1->discardCount[0] == benchmarkGame1->discardCount[0] + 1 || testGame1->discardCount[0] == 1)

@@ -10,7 +10,7 @@
 #include "rngs.h"
 
 void checkPiles(struct gameState *testGame, struct gameState *originalGame) {
-	for (i = 0; i < 27; i++)
+	for (int i = 0; i < 27; i++)
 	{
 		if (testGame->supplyCount[i] != originalGame->supplyCount[i])
 			printf("FAIL: Card pile %d changed\n", i);
@@ -89,12 +89,9 @@ int treasureCountD(struct gameState *G) {
 }
 
 int main() {
-	int i;
 	int seed = 8888;
 	int numPlayer = 3;
-	int maxBonus = 10;
-	int p, r, handCount;
-	int fakeBonus = -1;
+	int *fakeBonus = &seed; //this value isn't actually used, so I gave it a placeholder
 	int k[10] = { adventurer, council_room, feast, gardens, mine
 			   , steward, smithy, village, baron, great_hall };
 	struct gameState *benchmarkGame1 = newGame();
@@ -111,18 +108,6 @@ int main() {
 	initializeGame(numPlayer, k, seed, testGame3);
 	int test1, test2, test3;
 
-	int maxHandCount = 5;
-	// arrays of all coppers, silvers, and golds
-	int coppers[MAX_HAND];
-	int silvers[MAX_HAND];
-	int golds[MAX_HAND];
-	for (i = 0; i < MAX_HAND; i++)
-	{
-		coppers[i] = copper;
-		silvers[i] = silver;
-		golds[i] = gold;
-	}
-
 	//create game states
 	//test without shuffle
 	testGame1->deck[0][0] = copper;
@@ -133,7 +118,7 @@ int main() {
 	benchmarkGame1->deck[0][2] = adventurer;
 
 	//test
-	printf("Test 1: No shuffle");
+	printf("Test 1: No shuffle\n");
 	test1 = cardEffect(adventurer, 0, 0, 0, testGame1, 2, fakeBonus);
 	//test return value
 	if (test1 == 0)
@@ -151,7 +136,7 @@ int main() {
 	else
 		printf("FAIL: Hand count incorrect, expected %d, actually %d\n", benchmarkGame1->handCount[0] + 1, testGame1->handCount[0]);
 	//test deck and discard
-	if (treasureCountD(testGame1) == tresureCountD(benchmarkGame1) - 2)
+	if (treasureCountD(testGame1) == treasureCountD(benchmarkGame1) - 2)
 		printf("PASS: Treasure removed from discard and deck correctly\n");
 	else
 		printf("FAIL: Treasure removed from discard and deck incorrectly\n");
@@ -184,7 +169,7 @@ int main() {
 	benchmarkGame2->deck[0][2] = adventurer;
 
 	//test
-	printf("Test 2: with shuffle");
+	printf("Test 2: with shuffle\n");
 	test2 = cardEffect(adventurer, 0, 0, 0, testGame2, 2, fakeBonus);
 	//test return value
 	if (test2 == 0)
@@ -202,7 +187,7 @@ int main() {
 	else
 		printf("FAIL: Hand count incorrect, expected %d, actually %d\n", benchmarkGame2->handCount[0] + 1, testGame2->handCount[0]);
 	//test deck and discard
-	if (treasureCountD(testGame2) == tresureCountD(benchmarkGame2) - 2)
+	if (treasureCountD(testGame2) == treasureCountD(benchmarkGame2) - 2)
 		printf("PASS: Treasure removed from discard and deck correctly\n");
 	else
 		printf("FAIL: Treasure removed from discard and deck incorrectly\n");
@@ -221,7 +206,7 @@ int main() {
 	//test not enough treasure
 	//no treasure in the deck
 	printf("Test 3: Insufficient treasure\n");
-	for (int d = 0; c < benchmarkGame3->deckCount[0]; d++) {
+	for (int d = 0; d < benchmarkGame3->deckCount[0]; d++) {
 		testGame3->deck[0][d] = baron;
 		benchmarkGame3->deck[0][d] = baron;
 	}
@@ -252,7 +237,7 @@ int main() {
 	else
 		printf("FAIL: Hand count incorrect, expected %d, actually %d\n", benchmarkGame3->handCount[0], testGame3->handCount[0]);
 	//test deck and discard
-	if (treasureCountD(testGame3) == tresureCountD(benchmarkGame3) - 1)
+	if (treasureCountD(testGame3) == treasureCountD(benchmarkGame3) - 1)
 		printf("PASS: Treasure removed from discard and deck correctly\n");
 	else
 		printf("FAIL: Treasure removed from discard and deck incorrectly\n");

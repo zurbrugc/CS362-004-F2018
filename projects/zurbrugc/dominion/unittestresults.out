@@ -1,0 +1,325 @@
+cardtest1.c:
+Test 1
+PASS: Card executed correctly
+FAIL: Hand count incorrect; expected 7, actual 8
+FAIL: Discard and deck counts wrong; expected 3, actual 1
+Now testing player 1
+PASS: Deck count updated
+PASS: Hand count not updated
+PASS: Discard count not updated
+Now testing player 2
+PASS: Deck count updated
+PASS: Hand count not updated
+PASS: Discard count not updated
+Now testing player 3
+PASS: Deck count updated
+PASS: Hand count not updated
+PASS: Discard count not updated
+Test 2
+PASS: Card executed correctly
+FAIL: Hand count incorrect; expected 7, actual 8
+FAIL: Discard and deck counts wrong; expected 3, actual 1
+Now testing player 1
+PASS: Deck count updated
+PASS: Hand count not updated
+PASS: Discard count not updated
+Now testing player 2
+PASS: Deck count updated
+PASS: Hand count not updated
+PASS: Discard count not updated
+Now testing player 3
+PASS: Deck count updated
+PASS: Hand count not updated
+PASS: Discard count not updated
+Test 3
+PASS: Card executed correctly
+FAIL: Hand count incorrect; expected 7, actual 8
+FAIL: Discard and deck counts wrong; expected 3, actual 1
+Now testing player 1
+PASS: Deck count updated
+PASS: Hand count not updated
+PASS: Discard count not updated
+Now testing player 2
+PASS: Deck count updated
+PASS: Hand count not updated
+PASS: Discard count not updated
+Now testing player 3
+PASS: Deck count updated
+PASS: Hand count not updated
+PASS: Discard count not updated
+File 'dominion.c'
+Lines executed:36.64% of 565
+Creating 'dominion.c.gcov'
+
+cardtest2.c:
+Test 1: No shuffle
+PASS: Function executed correctly
+PASS: Treasure added to hand
+FAIL: Hand count incorrect, expected 6, actually 7
+PASS: Treasure removed from discard and deck correctly
+FAIL: Cards not discarded correctly
+Discard count plus deck count should be 4, actually 3
+Now testing player 1
+PASS: Deck count updated
+PASS: Hand count not updated
+PASS: Discard count not updated
+Now testing player 2
+PASS: Deck count updated
+PASS: Hand count not updated
+PASS: Discard count not updated
+Test 2: with shuffle
+PASS: Function executed correctly
+PASS: Treasure added to hand
+FAIL: Hand count incorrect, expected 6, actually 7
+PASS: Treasure removed from discard and deck correctly
+FAIL: Cards not discarded correctly
+Discard count plus deck count should be 6, actually 5
+Now testing player 1
+PASS: Deck count updated
+PASS: Hand count not updated
+PASS: Discard count not updated
+Now testing player 2
+PASS: Deck count updated
+PASS: Hand count not updated
+PASS: Discard count not updated
+Test 3: Insufficient treasure
+PASS: Function executed correctly
+PASS: Treasure added to hand
+FAIL: Hand count incorrect, expected 5, actually 6
+PASS: Treasure removed from discard and deck correctly
+FAIL: Cards not discarded correctly
+Discard count plus deck count should be 6, actually 5
+Now testing player 1
+PASS: Deck count updated
+PASS: Hand count not updated
+PASS: Discard count not updated
+Now testing player 2
+PASS: Deck count updated
+PASS: Hand count not updated
+PASS: Discard count not updated
+File 'dominion.c'
+Lines executed:36.64% of 565
+Creating 'dominion.c.gcov'
+
+cardtest3.c:
+PASS: Card executed correctly
+PASS: Hand count the same
+FAIL: Discard count wrong; expected 6 or 1, actual 3
+FAIL: Deck count wrong; expected 4 or 5, actual 3
+FAIL: Actions incorrect; expected 2, actually 4
+Now testing player 1
+PASS: Deck count updated
+PASS: Hand count not updated
+PASS: Discard count not updated
+Now testing player 2
+PASS: Deck count updated
+PASS: Hand count not updated
+PASS: Discard count not updated
+Now testing player 3
+PASS: Deck count updated
+PASS: Hand count not updated
+PASS: Discard count not updated
+PASS: Card executed correctly
+PASS: Hand count the same
+FAIL: Discard count wrong; expected 6 or 1, actual 3
+FAIL: Deck count wrong; expected 4 or 5, actual 3
+FAIL: Actions incorrect; expected 6, actually 8
+Now testing player 1
+PASS: Deck count updated
+PASS: Hand count not updated
+PASS: Discard count not updated
+Now testing player 2
+PASS: Deck count updated
+PASS: Hand count not updated
+PASS: Discard count not updated
+Now testing player 3
+PASS: Deck count updated
+PASS: Hand count not updated
+PASS: Discard count not updated
+PASS: Card executed correctly
+PASS: Hand count the same
+FAIL: Discard count wrong; expected 6 or 1, actual 3
+FAIL: Deck count wrong; expected 4 or 5, actual 3
+FAIL: Actions incorrect; expected 3, actually 5
+Now testing player 1
+PASS: Deck count updated
+PASS: Hand count not updated
+PASS: Discard count not updated
+Now testing player 2
+PASS: Deck count updated
+PASS: Hand count not updated
+PASS: Discard count not updated
+Now testing player 3
+PASS: Deck count updated
+PASS: Hand count not updated
+PASS: Discard count not updated
+File 'dominion.c'
+Lines executed:36.64% of 565
+Creating 'dominion.c.gcov'
+
+cardtest4.c:
+PASS: Function returned correctly
+PASS: Buys updated correctly
+PASS: Coins updated correctly
+FAIL: Expected 2 coppers; actual: 3 coppers
+FAIL: Expected hand count to be 3, actual: 4
+PASS: Discard count correct
+PASS: Deck count correct
+Now testing player 1
+PASS: Deck count updated
+PASS: Hand count not updated
+PASS: Discard count not updated
+Now testing player 2
+PASS: Deck count updated
+PASS: Hand count not updated
+PASS: Discard count not updated
+Now testing player 3
+PASS: Deck count updated
+PASS: Hand count not updated
+PASS: Discard count not updated
+PASS: Function returned correctly
+PASS: Buys updated correctly
+PASS: Coins updated correctly
+PASS: Card removed
+PASS: Hand count correct
+PASS: Discard count correct
+PASS: Deck count correct
+Now testing player 1
+PASS: Deck count updated
+PASS: Hand count not updated
+PASS: Discard count not updated
+Now testing player 2
+PASS: Deck count updated
+PASS: Hand count not updated
+PASS: Discard count not updated
+Now testing player 3
+PASS: Deck count updated
+PASS: Hand count not updated
+PASS: Discard count not updated
+PASS: Function returned correctly
+PASS: Buys updated correctly
+PASS: Coins updated correctly
+PASS: Card removed
+PASS: Hand count correct
+PASS: Discard count correct
+PASS: Deck count correct
+Now testing player 1
+PASS: Deck count updated
+PASS: Hand count not updated
+PASS: Discard count not updated
+Now testing player 2
+PASS: Deck count updated
+PASS: Hand count not updated
+PASS: Discard count not updated
+Now testing player 3
+PASS: Deck count updated
+PASS: Hand count not updated
+PASS: Discard count not updated
+File 'dominion.c'
+Lines executed:36.64% of 565
+Creating 'dominion.c.gcov'
+
+unittest1.c:
+Test 1: PASSED
+Expected: 1; Actual: 1
+Test 2: PASSED
+Expected: 1; Actual: 1
+Test 3: PASSED
+Expected: 1; Actual: 1
+Test 4: PASSED
+Expected: 0; Actual: 0
+Test 5: PASSED
+Expected: 1; Actual: 1
+Test 6: PASSED
+Expected: 0; Actual: 0
+Test 7: FAILED
+Expected: 1; Actual: 0
+File 'dominion.c'
+Lines executed:36.64% of 565
+Creating 'dominion.c.gcov'
+
+unittest2.c:
+Test 1
+
+PASS: Function was successful
+Now testing player 0
+PASS: Card added properly
+PASS: Deck count updated
+PASS: Hand count not updated
+PASS: Discard count not updated
+Now testing player 1
+PASS: Deck count updated
+PASS: Hand count not updated
+PASS: Discard count not updated
+Now testing player 2
+PASS: Deck count updated
+PASS: Hand count not updated
+PASS: Discard count not updated
+Test 2
+
+PASS: Function was successful
+Now testing player 0
+PASS: Deck count not updated
+PASS: Card added properly
+PASS: Hand count updated
+PASS: Discard count not updated
+Now testing player 1
+PASS: Deck count updated
+PASS: Hand count not updated
+PASS: Discard count not updated
+Now testing player 2
+PASS: Deck count updated
+PASS: Hand count not updated
+PASS: Discard count not updated
+Test 3
+
+PASS: Function was successful
+Now testing player 0
+PASS: Deck count not updated
+PASS: Hand count not updated
+PASS: Card discarded correctly
+PASS: Discard count updated
+Now testing player 1
+PASS: Deck count updated
+PASS: Hand count not updated
+PASS: Discard count not updated
+Now testing player 2
+PASS: Deck count updated
+PASS: Hand count not updated
+PASS: Discard count not updated
+Test 4PASS: Function was unsuccessful
+Now testing player 0
+PASS: Deck count not updated
+PASS: Hand count not updated
+PASS: Discard count not updated
+Now testing player 1
+PASS: Deck count updated
+PASS: Hand count not updated
+PASS: Discard count not updated
+Now testing player 2
+PASS: Deck count updated
+PASS: Hand count not updated
+PASS: Discard count not updated
+File 'dominion.c'
+Lines executed:36.64% of 565
+Creating 'dominion.c.gcov'
+
+unittest3.c:
+PASS: smithy
+PASS: estate
+PASS: gold
+PASS: steward
+PASS: steward again
+PASS: smithy again
+File 'dominion.c'
+Lines executed:36.64% of 565
+Creating 'dominion.c.gcov'
+
+unittest4.c:
+PASS: test1
+PASS: test2
+PASS: test3
+File 'dominion.c'
+Lines executed:36.64% of 565
+Creating 'dominion.c.gcov'
+

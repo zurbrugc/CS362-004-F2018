@@ -74,7 +74,7 @@ int main() {
 	//G7: testing bounds, 3 piles empty
 	initializeGame(numPlayer, k, 555, G7);
 	G7->supplyCount[treasure_map] = 0;
-	G7->supplyCount[remodel] = 0;
+	G7->supplyCount[baron] = 0;
 	G7->supplyCount[village] = 0;
 
 	//run the function: isGameOver()
@@ -130,7 +130,7 @@ int main() {
 	printf("Expected: %d; Actual: %d\n", 0, test6);
 
 	printf("Test 7: ");
-	if (test2 == 1)
+	if (test7 == 1)
 		printf("PASSED\n");
 	else
 		printf("FAILED\n");

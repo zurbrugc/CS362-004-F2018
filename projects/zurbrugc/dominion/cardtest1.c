@@ -10,7 +10,7 @@
 #include "rngs.h"
 
 void checkPiles(struct gameState *testGame, struct gameState *originalGame) {
-	for (i = 0; i < 27; i++)
+	for (int i = 0; i < 27; i++)
 	{
 		if (testGame->supplyCount[i] != originalGame->supplyCount[i])
 			printf("FAIL: Card pile %d changed\n", i);
@@ -65,11 +65,7 @@ void checkOtherPlayers(struct gameState *testGame, struct gameState *originalGam
 }
 
 int main() {
-	int i;
 	int numPlayer = 4;
-	int maxBonus = 10;
-	int p, r, handCount;
-	int bonus;
 	int k[10] = { adventurer, council_room, feast, gardens, mine
 			   , steward, smithy, village, baron, great_hall };
 	struct gameState *benchmarkGame1 = newGame();
@@ -85,22 +81,13 @@ int main() {
 	initializeGame(numPlayer, k, 3333, testGame2);
 	initializeGame(numPlayer, k, 3333, testGame3);
 	int test1, test2, test3;
-	int *fakeBonus = -1;
+	int *fakeBonus = &numPlayer;
 
 	int maxHandCount = 5;
-	// arrays of all coppers, silvers, and golds
-	int coppers[MAX_HAND];
-	int silvers[MAX_HAND];
-	int golds[MAX_HAND];
-	for (i = 0; i < MAX_HAND; i++)
-	{
-		coppers[i] = copper;
-		silvers[i] = silver;
-		golds[i] = gold;
-	}
 
 	//test the smithy card
 	//smithy is first card
+	printf("Test 1\n");
 	testGame1->hand[0][0] = smithy;
 	benchmarkGame1->hand[0][0] = smithy;
 	test1 = cardEffect(smithy, 0, 0, 0, testGame1, 0, fakeBonus);
@@ -124,6 +111,7 @@ int main() {
 	checkPiles(testGame1, benchmarkGame1);
 
 	//smithy is in middle
+	printf("Test 2\n");
 	testGame2->hand[0][2] = smithy;
 	benchmarkGame2->hand[0][2] = smithy;
 	test2 = cardEffect(smithy, 0, 0, 0, testGame2, 2, fakeBonus);
@@ -147,9 +135,10 @@ int main() {
 	checkPiles(testGame2, benchmarkGame2);
 
 	//smithy is last card
+	printf("Test 3\n");
 	testGame3->hand[0][testGame3->handCount[0] - 1] = smithy;
 	benchmarkGame3->hand[0][testGame3->handCount[0] - 1] = smithy;
-	test3 = cardEffect(smithy, 0, 0, 0, testGame3, testgame3->handCount[0] - 1, fakeBonus);
+	test3 = cardEffect(smithy, 0, 0, 0, testGame3, testGame3->handCount[0] - 1, fakeBonus);
 	if (test3 == 0)
 		printf("PASS: Card executed correctly\n");
 	else

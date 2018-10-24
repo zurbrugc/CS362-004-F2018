@@ -20,7 +20,7 @@ int cardCountHand(struct gameState *G, int card) {
 }
 
 void checkPiles(struct gameState *testGame, struct gameState *originalGame) {
-	for (i = 0; i < 27; i++)
+	for (int i = 0; i < 27; i++)
 	{
 		if (testGame->supplyCount[i] != originalGame->supplyCount[i])
 			printf("FAIL: Card pile %d changed\n", i);
@@ -75,12 +75,9 @@ void checkOtherPlayers(struct gameState *testGame, struct gameState *originalGam
 }
 
 int main() {
-	int i;
 	int seed = 8888;
 	int numPlayer = 4;
-	int maxBonus = 10;
-	int p, r, handCount;
-	int bonus;
+	int *bonus = &seed;
 	int k[10] = { adventurer, council_room, feast, gardens, mine
 			   , steward, smithy, village, baron, great_hall };
 	struct gameState *benchmarkGame1 = newGame();
@@ -100,18 +97,7 @@ int main() {
 	initializeGame(numPlayer, k, seed, testGame3);
 	initializeGame(numPlayer, k, seed, testGame4);
 	int test1, test2, test3, test4;
-	int discardcounter, deckcounter;
-	int maxHandCount = 5;
-	// arrays of all coppers, silvers, and golds
-	int coppers[MAX_HAND];
-	int silvers[MAX_HAND];
-	int golds[MAX_HAND];
-	for (i = 0; i < MAX_HAND; i++)
-	{
-		coppers[i] = copper;
-		silvers[i] = silver;
-		golds[i] = gold;
-	}
+	int deckcounter;
 
 	//test trashing a copper from beginning
 	testGame1->hand[0][0] = copper;
@@ -123,7 +109,7 @@ int main() {
 	if (test1 == 0)
 		printf("PASS: Function returned correctly\n");
 	else
-		printf("FAIL: Function returned error of $d\n", test1);
+		printf("FAIL: Function returned error of %d\n", test1);
 	//test buy change
 	if (testGame1->numBuys == benchmarkGame1->numBuys + 1)
 		printf("PASS: Buys updated correctly\n");
@@ -144,11 +130,11 @@ int main() {
 		printf("PASS: Hand count correct\n");
 	else
 		printf("FAIL: Expected hand count to be %d, actual: %d\n", benchmarkGame1->handCount[0] - 2, testGame1->handCount[0]);
-	//test discard count
-	if (testGame1->discardCount[0] == benchmarkGame1->discardCount[0] + 1)
+	//test discard count (salvager is discarded)
+	if (testGame1->discardCount[0] == benchmarkGame1->discardCount[0])
 		printf("PASS: Discard count correct\n");
 	else
-		printf("FAIL: Expected discard count to be %d, actual: %d\n", benchmarkGame1->discardCount[0] + 1, testGame1->discardCount[0]);
+		printf("FAIL: Expected discard count to be %d, actual: %d\n", benchmarkGame1->discardCount[0], testGame1->discardCount[0]);
 	//test that deck is same
 	for (deckcounter = 0; deckcounter < MAX_DECK; deckcounter++) {
 		if (testGame1->deck[0][deckcounter] != benchmarkGame1->deck[0][deckcounter])
@@ -172,7 +158,7 @@ int main() {
 	if (test2 == 0)
 		printf("PASS: Function returned correctly\n");
 	else
-		printf("FAIL: Function returned error of $d\n", test2);
+		printf("FAIL: Function returned error of %d\n", test2);
 	//test buy change
 	if (testGame2->numBuys == benchmarkGame2->numBuys + 1)
 		printf("PASS: Buys updated correctly\n");
@@ -194,10 +180,10 @@ int main() {
 	else
 		printf("FAIL: Expected hand count to be %d, actual: %d\n", benchmarkGame2->handCount[0] - 2, testGame2->handCount[0]);
 	//test discard count
-	if (testGame2->discardCount[0] == benchmarkGame2->discardCount[0] + 1)
+	if (testGame2->discardCount[0] == benchmarkGame2->discardCount[0])
 		printf("PASS: Discard count correct\n");
 	else
-		printf("FAIL: Expected discard count to be %d, actual: %d\n", benchmarkGame2->discardCount[0] + 1, testGame2->discardCount[0]);
+		printf("FAIL: Expected discard count to be %d, actual: %d\n", benchmarkGame2->discardCount[0], testGame2->discardCount[0]);
 	//test that deck is same
 	for (deckcounter = 0; deckcounter < MAX_DECK; deckcounter++) {
 		if (testGame2->deck[0][deckcounter] != benchmarkGame2->deck[0][deckcounter])
@@ -221,7 +207,7 @@ int main() {
 	if (test3 == 0)
 		printf("PASS: Function returned correctly\n");
 	else
-		printf("FAIL: Function returned error of $d\n", test3);
+		printf("FAIL: Function returned error of %d\n", test3);
 	//test buy change
 	if (testGame3->numBuys == benchmarkGame3->numBuys + 1)
 		printf("PASS: Buys updated correctly\n");
@@ -243,10 +229,10 @@ int main() {
 	else
 		printf("FAIL: Expected hand count to be %d, actual: %d\n", benchmarkGame3->handCount[0] - 2, testGame3->handCount[0]);
 	//test discard count
-	if (testGame3->discardCount[0] == benchmarkGame3->discardCount[0] + 1)
+	if (testGame3->discardCount[0] == benchmarkGame3->discardCount[0])
 		printf("PASS: Discard count correct\n");
 	else
-		printf("FAIL: Expected discard count to be %d, actual: %d\n", benchmarkGame3->discardCount[0] + 1, testGame3->discardCount[0]);
+		printf("FAIL: Expected discard count to be %d, actual: %d\n", benchmarkGame3->discardCount[0], testGame3->discardCount[0]);
 	//test that deck is same
 	for (deckcounter = 0; deckcounter < MAX_DECK; deckcounter++) {
 		if (testGame3->deck[0][deckcounter] != benchmarkGame3->deck[0][deckcounter])
