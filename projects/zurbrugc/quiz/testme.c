@@ -6,13 +6,30 @@
 char inputChar()
 {
     // TODO: rewrite this function
-    return ' ';
+	char r1 = (rand() % 95) + 32;
+    return r1;
 }
 
 char *inputString()
 {
     // TODO: rewrite this function
-    return "";
+	char randChar1, randChar2, randChar3, randChar4, randChar5;
+	//random number 0 to 100
+	int r1 = rand() % 101;
+	if (r1 == 64) {
+		//make sure the string is reset occasionally
+		char stringArray[] = { 'r', 'e', 's', 'e', 't', '\0' };
+		return stringArray;
+	}
+	else {
+			randChar1 = (rand() % 95) + 32;
+			randChar2 = (rand() % 95) + 32;
+			randChar3 = (rand() % 95) + 32;
+			randChar4 = (rand() % 95) + 32;
+			randChar5 = (rand() % 95) + 32;
+			char stringArray[] = { randChar1, randChar2, randChar3, randChar4, randChar5, '\0' };
+			return stringArray;
+	}
 }
 
 void testme()
