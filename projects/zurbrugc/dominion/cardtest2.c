@@ -75,7 +75,7 @@ int treasureCountHand(struct gameState *G) {
 }
 
 int treasureCountD(struct gameState *G) {
-	//counts how much treasure is in player 0's hand
+	//counts how much treasure is in player 0's deck and discard
 	int count = 0;
 	for (int i = 0; i < G->deckCount[0]; i++) {
 		if (G->deck[0][i] == copper || G->deck[0][i] == silver || G->deck[0][i] == gold)
