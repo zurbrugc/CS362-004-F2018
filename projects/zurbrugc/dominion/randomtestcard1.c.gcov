@@ -1,0 +1,241 @@
+        -:    0:Source:randomtestcard1.c
+        -:    0:Graph:randomtestcard1.gcno
+        -:    0:Data:randomtestcard1.gcda
+        -:    0:Runs:1
+        -:    0:Programs:1
+        -:    1:/* Author: Collin Zurbrugg, based on a template provided by Professor Jaki Sharief Shaik
+        -:    2:** Date: 11/8/2018
+        -:    3:** Description: Conducts random tests of the smithy card
+        -:    4:*/
+        -:    5:
+        -:    6:#include "dominion.h"
+        -:    7:#include "dominion_helpers.h"
+        -:    8:#include <string.h>
+        -:    9:#include <stdio.h>
+        -:   10:#include <stdlib.h>
+        -:   11:#include <assert.h>
+        -:   12:#include "rngs.h"
+        -:   13:
+     5544:   14:void outputErrorInfo(struct gameState *buggyGame, int handPos) {
+     5544:   15:	printf("numPlayers: %d\n", buggyGame->numPlayers);
+     5544:   16:	printf("Active player: %d\n", buggyGame->whoseTurn);
+     5544:   17:	printf("Card played from hand position %d\n", handPos);
+        -:   18:
+     5544:   19:	printf("Deck counts: ");
+    22188:   20:	for (int i = 0; i < buggyGame->numPlayers; i++) {
+    16644:   21:		printf("%d ", buggyGame->deckCount[i]);
+        -:   22:	}
+     5544:   23:	printf("\nHand counts: ");
+    22188:   24:	for (int i = 0; i < buggyGame->numPlayers; i++) {
+    16644:   25:		printf("%d ", buggyGame->handCount[i]);
+        -:   26:	}
+     5544:   27:	printf("\nDiscard counts: ");
+    22188:   28:	for (int i = 0; i < buggyGame->numPlayers; i++) {
+    16644:   29:		printf("%d ", buggyGame->discardCount[i]);
+        -:   30:	}
+     5544:   31:	printf("\n");
+        -:   32:	//other relevant variables
+     5544:   33:}
+        -:   34:
+     5555:   35:void checkOtherPlayers(struct gameState *testGame, struct gameState *originalGame, int numPlayer, int playPos) {
+     5555:   36:	int errorFlag = 0;
+     5555:   37:	int globalErrorFlag = 0;
+    22234:   38:	for (int playercounter = 0; playercounter < numPlayer; playercounter++) {
+        -:   39:
+        -:   40:		//for loop for deck
+  4207537:   41:		for (int deckcounter = 0; deckcounter < originalGame->deckCount[originalGame->whoseTurn]; deckcounter++) {
+  4190858:   42:			if (testGame->deck[playercounter][deckcounter] != originalGame->deck[playercounter][deckcounter]) {
+     8562:   43:				errorFlag = 1;
+        -:   44:			}
+        -:   45:		}
+    16679:   46:		if (errorFlag == 1 && originalGame->discardCount[originalGame->whoseTurn] != 0) {
+        6:   47:			printf("FAIL: Deck not the same for player %d\n", playercounter);
+        6:   48:			globalErrorFlag = 1;
+        -:   49:		}
+    16679:   50:		errorFlag = 0;
+        -:   51:
+    16679:   52:		if (testGame->deckCount[playercounter] != originalGame->deckCount[playercounter]) {
+     5544:   53:			printf("FAIL: Deck count for player %d updated; ", playercounter);
+     5544:   54:			printf("Should be %d, actually %d\n", originalGame->deckCount[playercounter], testGame->deckCount[playercounter]);
+     5544:   55:			globalErrorFlag = 1;
+        -:   56:		}
+        -:   57:
+        -:   58:		//check player's hand
+  4226601:   59:		for (int handcounter = 0; handcounter < originalGame->handCount[originalGame->whoseTurn]; handcounter++) {
+  4209922:   60:			if (testGame->hand[playercounter][handcounter] != originalGame->hand[playercounter][handcounter]) {
+     4683:   61:				errorFlag = 1;
+        -:   62:			}
+        -:   63:		}
+    16679:   64:		if (errorFlag == 1 && originalGame->discardCount[originalGame->whoseTurn] != 0) {
+     4599:   65:			printf("FAIL: Hand not the same for player%d\n", playercounter);
+     4599:   66:			globalErrorFlag = 1;
+        -:   67:		}
+    16679:   68:		errorFlag = 0;
+        -:   69:		//check player's hand count
+    16679:   70:		if (testGame->handCount[playercounter] != originalGame->handCount[playercounter]) {
+     5552:   71:			printf("FAIL: Hand count updated for player %d; ", playercounter);
+     5552:   72:			printf("Should be %d, actually %d\n", originalGame->handCount[playercounter], testGame->handCount[playercounter]);
+     5552:   73:			globalErrorFlag = 1;
+        -:   74:		}
+        -:   75:
+        -:   76:		//check player's discard
+  4172479:   77:		for (int discardcounter = 0; discardcounter < originalGame->discardCount[originalGame->whoseTurn]; discardcounter++) {
+  4155800:   78:			if (testGame->discard[playercounter][discardcounter] != originalGame->discard[playercounter][discardcounter]) {
+     2522:   79:				errorFlag = 1;
+        -:   80:			}
+        -:   81:		}
+    16679:   82:		if (errorFlag == 1) {
+        9:   83:			printf("FAIL: Discard not the same for player %d\n", playercounter);
+        9:   84:			globalErrorFlag = 1;
+        -:   85:		}
+        -:   86:
+        -:   87:		//check player's discard count
+    16679:   88:		if (testGame->discardCount[playercounter] != originalGame->discardCount[playercounter]) {
+        9:   89:			printf("FAIL: Discard count updated for player %d; ", playercounter);
+        9:   90:			printf("Should be %d, actually %d\n", originalGame->discardCount[playercounter], testGame->discardCount[playercounter]);
+        9:   91:			globalErrorFlag = 1;
+        -:   92:		}
+        -:   93:	}
+     5555:   94:	if (globalErrorFlag == 1) {
+     5544:   95:		outputErrorInfo(testGame, playPos);
+        -:   96:	}
+     5555:   97:}
+        -:   98://main tests
+        1:   99:int main() {
+        -:  100:	//int k[10] = { adventurer, council_room, feast, gardens, remodel,
+        -:  101:		   //smithy, village, baron, great_hall, treasure_map };
+        -:  102:	int j;
+        -:  103:	int jj;
+        -:  104:	int jjj;
+        -:  105:	int seed;
+        -:  106:	int k[10];
+        -:  107:	int playPos;
+        -:  108:	int deckLimit;
+        -:  109:	int numPlayers;
+        -:  110:	int activePlayer;
+        -:  111:
+     5556:  112:	for (int i = 0; i < 5555; i++) {
+     5555:  113:		printf("------------\n");
+     5555:  114:		struct gameState *beforeGame = newGame();
+     5555:  115:		struct gameState *afterGame = newGame();
+        -:  116:		//randomize seed
+     5555:  117:		seed = rand();
+        -:  118:		//randomize numPlayers [2, 4]
+     5555:  119:		numPlayers = (rand() % 3) + 2;
+     5555:  120:		beforeGame->numPlayers = numPlayers;
+     5555:  121:		afterGame->numPlayers = numPlayers;
+        -:  122:		//randomize k
+     5555:  123:		k[0] = smithy;
+    55550:  124:		for (j = 1; j < 10; j++) {
+    49995:  125:			k[j] = (rand() % 20) + 7;
+        -:  126:		}
+        -:  127:		//initializeGame(numPlayers, k, seed, beforeGame);
+        -:  128:		//initializeGame(numPlayers, k, seed, afterGame);
+        -:  129:
+        -:  130:		//randomly choose active player
+     5555:  131:		activePlayer = (rand() % numPlayers);
+     5555:  132:		beforeGame->whoseTurn = activePlayer;
+     5555:  133:		afterGame->whoseTurn = activePlayer;
+        -:  134:
+        -:  135:		//reset hands and discards
+    22234:  136:		for (j = 0; j < numPlayers; j++) {
+    16679:  137:			beforeGame->handCount[j] = 0;
+    16679:  138:			afterGame->handCount[j] = 0;
+    16679:  139:			beforeGame->discardCount[j] = 0;
+    16679:  140:			afterGame->discardCount[j] = 0;
+  8356179:  141:			for (jj = 0; jj < MAX_DECK; jj++) {
+  8339500:  142:				beforeGame->hand[j][jj] = 0;
+  8339500:  143:				afterGame->hand[j][jj] = 0;
+        -:  144:			}
+  8356179:  145:			for (jj = 0; jj < MAX_DECK; jj++) {
+  8339500:  146:				beforeGame->deck[j][jj] = 0;
+  8339500:  147:				afterGame->deck[j][jj] = 0;
+  8339500:  148:				beforeGame->discard[j][jj] = 0;
+  8339500:  149:				afterGame->discard[j][jj] = 0;
+        -:  150:			}
+        -:  151:		}
+        -:  152:
+        -:  153:		//populate each player's deck
+    22234:  154:		for (j = 0; j < numPlayers; j++) {
+    16679:  155:			deckLimit = rand() % MAX_DECK;
+    16679:  156:			beforeGame->deckCount[j] = 0;
+    16679:  157:			afterGame->deckCount[j] = 0;
+  4199790:  158:			for (jj = 0; jj < deckLimit; jj++) {
+  4183111:  159:				jjj = rand() % 9;
+  4183111:  160:				beforeGame->deck[j][jj] = k[jjj];
+  4183111:  161:				afterGame->deck[j][jj] = k[jjj];
+  4183111:  162:				beforeGame->deckCount[j]++;
+  4183111:  163:				afterGame->deckCount[j]++;
+        -:  164:			}
+        -:  165:		}
+        -:  166:		//randomize discard of whoseTurn
+     5555:  167:		deckLimit = rand() % MAX_DECK;
+     5555:  168:		beforeGame->discardCount[activePlayer] = 0;
+     5555:  169:		afterGame->discardCount[activePlayer] = 0;
+  1407063:  170:		for (j = 0; j < deckLimit; j++) {
+  1401508:  171:			jj = rand() % 9;
+  1401508:  172:			beforeGame->discard[activePlayer][j] = k[jj];
+  1401508:  173:			afterGame->discard[activePlayer][j] = k[jj];
+  1401508:  174:			beforeGame->discardCount[activePlayer]++;
+  1401508:  175:			afterGame->discardCount[activePlayer]++;
+        -:  176:		}
+        -:  177:		//randomize hand of whoseTurn
+     5555:  178:		deckLimit = (rand() % (MAX_HAND - 1)) + 1;
+     5555:  179:		beforeGame->handCount[activePlayer] = 0;
+     5555:  180:		afterGame->handCount[activePlayer] = 0;
+  1397828:  181:		for (j = 0; j < deckLimit; j++) {
+  1392273:  182:			jj = rand() % 9;
+  1392273:  183:			beforeGame->hand[activePlayer][j] = k[jj];
+  1392273:  184:			afterGame->hand[activePlayer][j] = k[jj];
+  1392273:  185:			beforeGame->handCount[activePlayer]++;
+  1392273:  186:			afterGame->handCount[activePlayer]++;
+        -:  187:		}
+        -:  188:
+        -:  189:		//every 503 instances, make sure the player has less than three cards to draw
+     5555:  190:		if (i % 503 == 72) {
+       11:  191:			beforeGame->deckCount[beforeGame->whoseTurn] = 1;
+       11:  192:			beforeGame->discardCount[beforeGame->whoseTurn] = 1;
+       11:  193:			afterGame->deckCount[afterGame->whoseTurn] = 1;
+       11:  194:			afterGame->discardCount[afterGame->whoseTurn] = 1;
+        -:  195:		}
+        -:  196:
+        -:  197:		//set playPos to card
+     5555:  198:		playPos = (rand() % deckLimit);
+     5555:  199:		beforeGame->hand[activePlayer][playPos] = smithy;
+     5555:  200:		afterGame->hand[activePlayer][playPos] = smithy;
+        -:  201:
+        -:  202:		//call cardEffect
+     5555:  203:		cardEffect(smithy, 0, 0, 0, afterGame, playPos, 0);
+        -:  204:		//adjust before state appropriately
+    22220:  205:		for (j = 0; j < 3; j++) {
+    16665:  206:			drawCard(beforeGame->whoseTurn, beforeGame);
+        -:  207:		}
+     5555:  208:		discardCard(playPos, beforeGame->whoseTurn, beforeGame, 0);
+        -:  209:
+        -:  210:
+        -:  211:		//compare the game states
+     5555:  212:		checkOtherPlayers(afterGame, beforeGame, numPlayers, playPos);
+        -:  213:		//check numBuys
+     5555:  214:		if (beforeGame->numBuys != afterGame->numBuys) {
+    #####:  215:			printf("FAIL: numBuys different\n");
+    #####:  216:			printf("Should be %d, actually %d\n", beforeGame->numBuys, afterGame->numBuys);
+    #####:  217:			outputErrorInfo(afterGame, playPos);
+        -:  218:		}
+        -:  219:		//check numActions
+     5555:  220:		if (beforeGame->numActions != afterGame->numActions) {
+    #####:  221:			printf("FAIL: numActions different\n");
+    #####:  222:			printf("Should be %d, actually %d\n", beforeGame->numActions, afterGame->numActions);
+    #####:  223:			outputErrorInfo(afterGame, playPos);
+        -:  224:		}
+        -:  225:		//check coins
+     5555:  226:		if (beforeGame->coins != afterGame->coins) {
+    #####:  227:			printf("FAIL: coins different\n");
+    #####:  228:			printf("Should be %d, actually %d\n", beforeGame->coins, afterGame->coins);
+    #####:  229:			outputErrorInfo(afterGame, playPos);
+        -:  230:		}
+     5555:  231:		free(beforeGame);
+     5555:  232:		free(afterGame);
+        -:  233:	}
+        -:  234:
+        1:  235:	return 0;
+        -:  236:}

@@ -210,6 +210,7 @@ int main() {
 
 		//call cardEffect
 		cardEffect(village, 0, 0, 0, afterGame, playPos, 0);
+		//cardEffect(village, 0, 0, 0, beforeGame, playPos, 0);
 		//adjust before state appropriately
 		beforeGame->numActions = beforeGame->numActions + 2;
 		drawCard(beforeGame->whoseTurn, beforeGame);

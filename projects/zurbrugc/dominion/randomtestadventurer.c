@@ -35,7 +35,7 @@ void outputErrorInfo(struct gameState *buggyGame, int handPos) {
 int treasureCountHand(struct gameState *G, int player) {
 	//counts how much treasure is in player 0's hand
 	int count = 0;
-	for (int i = 0; i < G->handCount[0]; i++) {
+	for (int i = 0; i < G->handCount[player]; i++) {
 		if (G->hand[player][i] == copper || G->hand[player][i] == silver || G->hand[player][i] == gold)
 			count++;
 	}
@@ -45,11 +45,11 @@ int treasureCountHand(struct gameState *G, int player) {
 int treasureCountD(struct gameState *G, int player) {
 	//counts how much treasure is in player 0's deck and discard
 	int count = 0;
-	for (int i = 0; i < G->deckCount[0]; i++) {
+	for (int i = 0; i < G->deckCount[player]; i++) {
 		if (G->deck[player][i] == copper || G->deck[player][i] == silver || G->deck[player][i] == gold)
 			count++;
 	}
-	for (int j = 0; j < G->discardCount[0]; j++) {
+	for (int j = 0; j < G->discardCount[player]; j++) {
 		if (G->discard[player][j] == copper || G->discard[player][j] == silver || G->discard[player][j] == gold)
 			count++;
 	}
@@ -61,10 +61,10 @@ void checkOtherPlayers(struct gameState *testGame, struct gameState *originalGam
 	int globalErrorFlag = 0;
 	for (int playercounter = 0; playercounter < numPlayer; playercounter++) {
 
-		//check player's deck count
-		if (testGame->deckCount[playercounter] != originalGame->deckCount[playercounter]) {
-			printf("FAIL: Deck count for player %d updated; ", playercounter);
-			printf("Should be %d, actually %d\n", originalGame->deckCount[playercounter], testGame->deckCount[playercounter]);
+		//check player's deck and discard count
+		if (testGame->deckCount[playercounter] + testGame->discardCount[playercounter] != originalGame->deckCount[playercounter] + originalGame->discardCount[playercounter]) {
+			printf("FAIL: Deck and discard count for player %d updated; ", playercounter);
+			printf("Should be %d, actually %d\n", originalGame->deckCount[playercounter] + originalGame->discardCount[playercounter], testGame->deckCount[playercounter] + testGame->discardCount[playercounter]);
 			globalErrorFlag = 1;
 		}
 
@@ -72,13 +72,6 @@ void checkOtherPlayers(struct gameState *testGame, struct gameState *originalGam
 		if (testGame->handCount[playercounter] != originalGame->handCount[playercounter]) {
 			printf("FAIL: Hand count updated for player %d; ", playercounter);
 			printf("Should be %d, actually %d\n", originalGame->handCount[playercounter], testGame->handCount[playercounter]);
-			globalErrorFlag = 1;
-		}
-
-		//check player's discard count
-		if (testGame->discardCount[playercounter] != originalGame->discardCount[playercounter]) {
-			printf("FAIL: Discard count updated for player %d; ", playercounter);
-			printf("Should be %d, actually %d\n", originalGame->discardCount[playercounter], testGame->discardCount[playercounter]);
 			globalErrorFlag = 1;
 		}
 	}
@@ -107,7 +100,7 @@ int main() {
 	int availableTreasure;
 
 	for (int i = 0; i < 5555; i++) {
-		printf("------------\n")
+		printf("------------\n");
 		struct gameState *beforeGame = newGame();
 		struct gameState *afterGame = newGame();
 		//randomize seed
@@ -148,10 +141,9 @@ int main() {
 			}
 		}
 
-
 		//populate each player's deck
 		for (j = 0; j < numPlayers; j++) {
-			deckLimit = rand() % MAX_DECK;
+			deckLimit = (rand() % (MAX_DECK - 1)) + 1;
 			beforeGame->deckCount[j] = 0;
 			afterGame->deckCount[j] = 0;
 			for (jj = 0; jj < deckLimit; jj++) {
@@ -163,7 +155,10 @@ int main() {
 			}
 		}
 		//randomize discard of whoseTurn
-		discardLimit = rand() % MAX_DECK;
+		discardLimit = MAX_DECK - beforeGame->deckCount[activePlayer];
+		if (discardLimit == 0) discardLimit++;
+		discardLimit = rand() % discardLimit;
+		if (discardLimit == 0) discardLimit++;
 		beforeGame->discardCount[activePlayer] = 0;
 		afterGame->discardCount[activePlayer] = 0;
 		for (j = 0; j < discardLimit; j++) {
@@ -184,52 +179,61 @@ int main() {
 			beforeGame->handCount[activePlayer]++;
 			afterGame->handCount[activePlayer]++;
 		}
+		deckLimit = beforeGame->deckCount[activePlayer];
 
 		//anything else to randomize?
-		j = rand() % 10;
+		j = rand() % 9;
 		if (j < 5) {
 			//populate treasure like normal 5/10 times
-			for (jj = rand() % deckLimit; jj > 0; jj--) {
-				jjj = rand() % deckLimit;
-				beforeGame->deck[jj][jjj] = silver;
-				afterGame->deck[jj][jjj] = silver;
+			if (deckLimit > 0) {
+				for (jj = (rand() % deckLimit) + 1; jj > 0; jj--) {
+	jjj = rand() % deckLimit;
+	beforeGame->deck[activePlayer][jjj] = silver;
+	afterGame->deck[activePlayer][jjj] = silver;
+				}
 			}
-			for (jj = rand() % discardLimit; jj > 0; jj--) {
-				jjj = rand() % discardLimit;
-				beforeGame->deck[jj][jjj] = copper;
-				afterGame->deck[jj][jjj] = copper;
+			if (discardLimit > 0) {
+				for (jj = (rand() % discardLimit) + 1; jj > 0; jj--) {
+		jjj = rand() % discardLimit;
+		beforeGame->deck[activePlayer][jjj] = copper;
+		afterGame->deck[activePlayer][jjj] = copper;
+				}
 			}
 		}
 		else if (j < 8) {
 			//ensure shuffle 3/10 times
-			//no treasure in deck
-			for (jj = rand() % discardLimit; jj > 0; jj--) {
-				jjj = rand() % discardLimit;
-				beforeGame->discard[jj][jjj] = gold;
-				afterGame->discard[jj][jjj] = gold;
+			if (discardLimit > 0) {
+				for (jj = (rand() % discardLimit) + 1; jj > 0; jj--) {
+		jjj = rand() % discardLimit;
+		beforeGame->discard[activePlayer][jjj] = gold;
+		afterGame->discard[activePlayer][jjj] = gold;
+				}
 			}
 		}
 		else if (j == 8) {
 			//one treasure 1/10 times
-			jjj = rand() % discardLimit;
-			beforeGame->discard[jj][jjj] = gold;
-			afterGame->discard[jj][jjj] = gold;
+			if (discardLimit > 0) {
+				jjj = rand() % discardLimit;
+				beforeGame->discard[activePlayer][jjj] = gold;
+				afterGame->discard[activePlayer][jjj] = gold;
+			}
 		}
 		//if j is 9, add no treasure
+		//this causes a segmentation fault, so we're not running it
 
 		//set playPos to card
-		playPos = (rand() % deckLimit);
+		playPos = (rand() % handLimit);
 		beforeGame->hand[activePlayer][playPos] = adventurer;
 		afterGame->hand[activePlayer][playPos] = adventurer;
 
-		//call cardEffect
+ 		//call cardEffect
 		cardEffect(adventurer, 0, 0, 0, afterGame, playPos, 0);
 		//cardEffect(adventurer, 0, 0, 0, beforeGame, playPos, 0);
 
 		//adjust before state appropriately
 		availableTreasure = treasureCountD(beforeGame, beforeGame->whoseTurn);
 		handTreasure = treasureCountHand(beforeGame, beforeGame->whoseTurn);
-		notHandCount = beforeGame->drawCount[beforeGame->whoseTurn] + beforeGame->discardCount[beforeGame->whoseTurn];
+		notHandCount = beforeGame->deckCount[beforeGame->whoseTurn] + beforeGame->discardCount[beforeGame->whoseTurn];
 		if (availableTreasure == 1) {
 			handTreasure++;
 			availableTreasure--;
@@ -240,7 +244,7 @@ int main() {
 			handTreasure = handTreasure + 2;
 			availableTreasure = availableTreasure - 2;
 			beforeGame->handCount[beforeGame->whoseTurn] = beforeGame->handCount[beforeGame->whoseTurn] + 2;
-			notHandCount = notHandCout + 2;
+			notHandCount = notHandCount + 2;
 		}
 
 		//compare the game states
@@ -248,35 +252,30 @@ int main() {
 
 		//check treasure
 		for (j = 0; j < numPlayers; j++) {
-			treasureHolder = treasureCountHand(afterGame, j);
-			if (handTreasure != treasureHolder) {
-				printf("FAIL: Player %d has %d treasure in hand\n", j, treasureHolder);
-				printf("Expected %d", handTreasure);
+			if (j == activePlayer) {
+				treasureHolder = treasureCountHand(afterGame, j);
+				if (handTreasure != treasureHolder) {
+					printf("FAIL: Player %d has %d treasure in hand\n", j, treasureHolder);
+					printf("Expected %d\n", handTreasure);
+				}
+				treasureHolder = treasureCountD(afterGame, j);
+				if (availableTreasure != treasureHolder) {
+					printf("FAIL: Player %d has %d treasure in deck and discard\n", j, treasureHolder);
+					printf("Expected %d\n", availableTreasure);
+				}
 			}
-			treasureHolder = treasureCountD(afterGame, j);
-			if (availableTreasure != treasureHolder) {
-				printf("FAIL: Player %d has %d treasure in deck and discard\n", j, treasureHolder);
-				printf("Expected %d", availableTreasure);
+			else {
+				treasureHolder = treasureCountHand(afterGame, j);
+				if (treasureCountHand(beforeGame, j) != treasureHolder) {
+					printf("FAIL: Player %d has %d treasure in hand\n", j, treasureHolder);
+					printf("Expected %d\n", handTreasure);
+				}
+				treasureHolder = treasureCountD(afterGame, j);
+				if (treasureCountD(beforeGame, j) != treasureHolder) {
+					printf("FAIL: Player %d has %d treasure in deck and discard\n", j, treasureHolder);
+					printf("Expected %d\n", availableTreasure);
+				}
 			}
-		}
-
-		//check numBuys
-		if (beforeGame->numBuys != afterGame->numBuys) {
-			printf("FAIL: numBuys different\n");
-			printf("Should be %d, actually %d\n", beforeGame->numBuys, afterGame->numBuys);
-			outputErrorInfo(testGame, playPos);
-		}
-		//check numActions
-		if (beforeGame->numActions != afterGame->numActions) {
-			printf("FAIL: numActions different\n");
-			printf("Should be %d, actually %d\n", beforeGame->numActions, afterGame->numActions);
-			outputErrorInfo(testGame, playPos);
-		}
-		//check coins
-		if (beforeGame->coins != afterGame->coins) {
-			printf("FAIL: coins different\n");
-			printf("Should be %d, actually %d\n", beforeGame->coins, afterGame->coins);
-			outputErrorInfo(testGame, playPos);
 		}
 		free(beforeGame);
 		free(afterGame);

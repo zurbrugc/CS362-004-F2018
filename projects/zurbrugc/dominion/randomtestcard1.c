@@ -1,5 +1,5 @@
 /* Author: Collin Zurbrugg, based on a template provided by Professor Jaki Sharief Shaik
-** Date: 11/10/2018
+** Date: 11/8/2018
 ** Description: Conducts random tests of the smithy card
 */
 
@@ -95,7 +95,7 @@ void checkOtherPlayers(struct gameState *testGame, struct gameState *originalGam
 		outputErrorInfo(testGame, playPos);
 	}
 }
-
+//main tests
 int main() {
 	//int k[10] = { adventurer, council_room, feast, gardens, remodel,
 		   //smithy, village, baron, great_hall, treasure_map };
